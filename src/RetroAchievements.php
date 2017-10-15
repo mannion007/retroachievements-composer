@@ -1,6 +1,8 @@
 <?php namespace JoeStrong\RetroAchievements;
 
 use GuzzleHttp\Client;
+use JoeStrong\RetroAchievements\Game\Game;
+use JoeStrong\RetroAchievements\Game\GameFormatterInterface;
 
 class RetroAchievements
 {
@@ -57,21 +59,21 @@ class RetroAchievements
      * Get the games for a particular console
      *
      * @param int $consoleId The id of the console to get games for
-     * @return Game[]
-     * @throws \Error
+     * @param GameFormatterInterface $formatter
+     * @return string
      */
-    public function getGamesForConsole(int $consoleId) : array
+    public function getGamesForConsole(int $consoleId, GameFormatterInterface $formatter) : string
     {
         $gamesData = $this->request('API_GetGameList.php', ['i' => $consoleId]);
 
-        return array_map(function ($gameData) {
+        return $formatter->format(array_map(function ($gameData) {
             return new Game(
                 $gameData->ID,
                 $gameData->Title,
                 $gameData->ConsoleID,
                 $gameData->ImageIcon
             );
-        }, $gamesData);
+        }, $gamesData));
     }
 
     /**

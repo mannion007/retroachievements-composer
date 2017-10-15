@@ -8,8 +8,7 @@ $username = '';
 $apiKey = '';
 
 $ra = new RetroAchievements($username, $apiKey);
-$games = $ra->getGamesForConsole(3);
 
-foreach ($games as $game) {
-    echo "$game->getTitle()<br>";
-}
+$formatter = new JoeStrong\RetroAchievements\Game\Formatter\HtmlGameFormatter();
+
+echo  $ra->getGamesForConsole(3, $formatter);

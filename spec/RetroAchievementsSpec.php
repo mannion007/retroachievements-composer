@@ -8,7 +8,8 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use JoeStrong\RetroAchievements\Console;
-use JoeStrong\RetroAchievements\Game;
+use JoeStrong\RetroAchievements\Game\Game;
+use JoeStrong\RetroAchievements\Game\GameFormatterInterface;
 use JoeStrong\RetroAchievements\RetroAchievements;
 use JoeStrong\RetroAchievements\User;
 use PhpSpec\Exception\Exception;
@@ -86,7 +87,7 @@ class RetroAchievementsSpec extends ObjectBehavior
         $this->getConsoles()->shouldOnlyContainInstancesOf(Console::class);
     }
 
-    function it_should_get_a_list_of_games_for_a_console()
+    function it_should_get_a_list_of_games_for_a_console(GameFormatterInterface $formatter)
     {
         $gameOb = (object) [
             'ID' => 504,
@@ -101,7 +102,12 @@ class RetroAchievementsSpec extends ObjectBehavior
         $this->beConstructedWith('user', 'apiKey', new Client(['handler' => $handler]));
 
         $consoleId = 1;
-        $this->getGamesForConsole($consoleId)->shouldOnlyContainInstancesOf(Game::class);
+
+        $formatter->format(
+            array_fill(0, 10, new Game(504, 'Super Mario Land', 4, ''))
+        )->willReturn('');
+
+        $this->getGamesForConsole($consoleId, $formatter);
     }
 
     function it_must_require_a_game_id_for_get_game_info()

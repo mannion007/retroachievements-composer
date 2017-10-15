@@ -33,10 +33,19 @@ Get the consoles
 
 `$ra->getConsoles();`
 
-Get games for console
-
-`$ra->getGamesForConsole($consoleId);`
-
 Get game info
 
 `$ra->getGameInfo($gameId);`
+
+
+### Get games for console
+
+`$ra->getGamesForConsole($consoleId, $formatter);`
+
+#### Available Formats
+
+There following response formats are available
+
+- HtmlGameFormatter (Provides output in HTML format)
+- JsonGameFormatter (Provides output in JSON format)
+- Implement your own using GameFormatterInterface
