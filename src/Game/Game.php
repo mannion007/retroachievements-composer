@@ -1,4 +1,4 @@
-<?php namespace JoeStrong\RetroAchievements;
+<?php namespace JoeStrong\RetroAchievements\Game;
 
 /**
  * Represents a game on RetroAchievements.org
